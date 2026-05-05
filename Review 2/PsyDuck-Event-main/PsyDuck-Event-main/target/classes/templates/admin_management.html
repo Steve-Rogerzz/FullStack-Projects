@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head('Admin Dashboard')}"></head>
+<body>
+
+<header th:replace="~{fragments :: navbar}"></header>
+
+<main class="max-w-[1440px] mx-auto px-8 pt-32 pb-24 min-h-screen">
+    <div class="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
+        <div class="space-y-2">
+            <h1 class="text-5xl font-black text-zinc-900 tracking-tighter">Event Management</h1>
+            <p class="text-zinc-400 font-bold text-sm uppercase tracking-widest">Oversee and organize campus activities</p>
+        </div>
+        <div class="flex gap-4">
+            <a th:href="@{/admin/events/export}" class="flex items-center gap-2 px-8 py-4 bg-white border border-zinc-100 rounded-pill text-zinc-900 font-black hover:bg-zinc-50 transition-all shadow-soft text-sm">
+                <span class="material-symbols-outlined">download</span> Export
+            </a>
+            <a th:href="@{/admin/events/new}" class="flex items-center gap-2 px-10 py-4 bg-zinc-900 text-white rounded-pill font-black hover:bg-black transition-all shadow-xl text-sm">
+                <span class="material-symbols-outlined">add</span> Create Event
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-[40px] border border-zinc-100 shadow-soft overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-zinc-50/50 border-b border-zinc-100">
+                        <th class="px-10 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Event</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Category</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Status</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Date</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Attendance</th>
+                        <th class="px-10 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-50">
+                    <tr th:each="event : ${events}" class="hover:bg-zinc-50/50 transition-colors group">
+                        <td class="px-10 py-8">
+                            <div class="flex items-center gap-5">
+                                <div class="w-14 h-14 rounded-2xl bg-zinc-100 flex items-center justify-center overflow-hidden border border-zinc-200">
+                                    <img th:src="${event.imageUrl}" class="w-full h-full object-cover"/>
+                                </div>
+                                <div>
+                                    <div class="font-black text-zinc-900 text-lg group-hover:text-black transition-colors" th:text="${event.title}">Event Title</div>
+                                    <div class="text-[10px] font-black text-zinc-400 uppercase tracking-tighter" th:text="'#EV-' + ${event.id}">ID</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-10 py-8">
+                            <span class="bg-zinc-100 text-zinc-500 px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest" th:text="${event.category}">Academic</span>
+                        </td>
+                        <td class="px-10 py-8">
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-pill text-[9px] font-black uppercase tracking-widest bg-zinc-900 text-white shadow-sm" th:text="${event.status}">Upcoming</span>
+                        </td>
+                        <td class="px-10 py-8 text-sm font-bold text-zinc-500" th:text="${#temporals.format(event.date, 'MMM dd, yyyy')}">Date</td>
+                        <td class="px-10 py-8">
+                            <div class="flex flex-col gap-3">
+                                <div class="flex justify-between items-center text-[10px] font-black text-zinc-400">
+                                    <span th:text="${event.registeredCount} + ' Joined'">170 Joined</span>
+                                    <span th:text="${(event.registeredCount * 100 / event.capacity)} + '%'">85%</span>
+                                </div>
+                                <div class="w-40 bg-zinc-100 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-zinc-900 h-full transition-all duration-1000" th:style="'width: ' + (${event.registeredCount * 100 / event.capacity}) + '%'"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-10 py-8 text-right">
+                            <div class="flex justify-end gap-3">
+                                <a th:href="@{'/admin/events/edit/' + ${event.id}}" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-white rounded-xl transition-all shadow-sm border border-transparent hover:border-zinc-200">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

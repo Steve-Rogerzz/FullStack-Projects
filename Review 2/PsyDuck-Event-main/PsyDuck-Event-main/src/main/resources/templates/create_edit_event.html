@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Manage Event')}"></head>
+<body>
+
+<header th:replace="~{fragments :: navbar}"></header>
+
+<main class="pt-48 pb-32 px-8 max-w-[1000px] mx-auto">
+    <div class="mb-16">
+        <span class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.4em] mb-4 block">Event Factory</span>
+        <h1 class="text-6xl font-black text-zinc-900 tracking-tighter" th:text="${event.id == null ? 'Launch New Event' : 'Modify Event Data'}">Launch Event</h1>
+    </div>
+
+    <form th:action="@{/admin/events/save}" th:object="${event}" method="post" class="space-y-12">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{registeredCount}"/>
+        
+        <div class="bg-white p-12 rounded-[50px] border border-zinc-100 shadow-soft space-y-10">
+            <h2 class="text-2xl font-black tracking-tight border-b border-zinc-50 pb-6">General Information</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="md:col-span-2 space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Event Title</label>
+                    <input th:field="*{title}" class="w-full p-6 bg-zinc-50 border border-zinc-50 rounded-[2rem] focus:bg-white focus:border-zinc-900 focus:ring-0 outline-none transition-all text-xl font-black" placeholder="e.g. Annual Symposium 2024" type="text" required/>
+                </div>
+
+                <div class="md:col-span-2 space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Public Description</label>
+                    <textarea th:field="*{description}" class="w-full p-6 bg-zinc-50 border border-zinc-50 rounded-[2rem] focus:bg-white focus:border-zinc-900 focus:ring-0 outline-none transition-all min-h-[120px] text-zinc-600 font-medium" placeholder="A short summary..."></textarea>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Event Date</label>
+                    <input th:field="*{date}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold" type="date" required/>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Category</label>
+                    <input th:field="*{category}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold" placeholder="e.g. Workshop" type="text"/>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Faculty / Department</label>
+                    <input th:field="*{department}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold" placeholder="e.g. Engineering" type="text"/>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Lead Coordinator</label>
+                    <input th:field="*{coordinator}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold" placeholder="e.g. Prof. Smith" type="text"/>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Maximum Capacity</label>
+                    <input th:field="*{capacity}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold" type="number" min="1" required/>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Current Status</label>
+                    <select th:field="*{status}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold appearance-none">
+                        <option th:each="st : ${T(com.stitch.eventhub.entity.Event.EventStatus).values()}" th:value="${st}" th:text="${st}">Status</option>
+                    </select>
+                </div>
+                
+                <div class="md:col-span-2 space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Banner Image URL</label>
+                    <input th:field="*{imageUrl}" class="w-full p-5 bg-zinc-50 border border-zinc-50 rounded-2xl focus:bg-white focus:border-zinc-900 outline-none transition-all font-bold" placeholder="https://..." type="text"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-zinc-900 p-12 rounded-[50px] shadow-2xl space-y-10 text-white">
+            <h2 class="text-2xl font-black tracking-tight border-b border-white/10 pb-6">Detailed Planning</h2>
+            
+            <div class="space-y-8">
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Full Schedule</label>
+                    <textarea th:field="*{schedule}" class="w-full p-6 bg-white/5 border border-white/10 rounded-[2rem] focus:bg-white/10 focus:border-white/20 focus:ring-0 outline-none transition-all min-h-[120px] text-zinc-300 font-medium" placeholder="e.g. 09:00 AM - Intro..."></textarea>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Deep Overview / Plans</label>
+                    <textarea th:field="*{plans}" class="w-full p-6 bg-white/5 border border-white/10 rounded-[2rem] focus:bg-white/10 focus:border-white/20 focus:ring-0 outline-none transition-all min-h-[160px] text-zinc-300 font-medium" placeholder="Detailed insights..."></textarea>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-4">Organizer Contact Info</label>
+                    <input th:field="*{organizerContact}" class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl focus:bg-white/10 focus:border-white/20 outline-none transition-all font-bold text-zinc-100" placeholder="e.g. email@university.edu | Lab 301" type="text"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-10 flex gap-4">
+            <a th:href="@{/admin}" class="flex-1 px-10 py-6 border border-zinc-200 rounded-pill font-black text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 transition-all text-center">Discard Changes</a>
+            <button type="submit" class="flex-[2] bg-zinc-900 text-white font-black py-6 rounded-pill hover:bg-black transition-all shadow-2xl text-lg hover:scale-[1.02]">Save & Publish Event</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

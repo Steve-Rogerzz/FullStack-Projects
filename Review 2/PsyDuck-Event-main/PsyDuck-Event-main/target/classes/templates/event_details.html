@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(${event.title})}"></head>
+<body class="bg-[#FAFAFA]">
+
+<header th:replace="~{fragments :: navbar}"></header>
+
+<main class="max-w-[1400px] mx-auto px-8 pt-44 pb-32 min-h-screen">
+    <!-- Top Magazine Header -->
+    <div class="mb-16 space-y-8">
+        <div class="flex items-center gap-3">
+            <span class="px-4 py-1 bg-zinc-900 text-white rounded-lg text-[9px] font-black uppercase tracking-[0.2em] shadow-lg" th:text="${event.category}">Technology</span>
+            <span class="text-[10px] font-black text-zinc-300 uppercase tracking-widest" th:text="${event.department}">Anna University</span>
+        </div>
+        <h1 class="text-7xl md:text-8xl font-black text-zinc-900 tracking-tighter leading-[0.85] max-w-5xl" th:text="${event.title}">Event Title.</h1>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        
+        <!-- Left: Image & Navigation -->
+        <div class="lg:col-span-8 space-y-12">
+            <!-- Immersive Banner -->
+            <div class="rounded-[60px] overflow-hidden shadow-2xl h-[500px] border-4 border-white bg-zinc-100 group">
+                <img th:src="${event.imageUrl}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Banner"/>
+            </div>
+
+            <!-- Internal Navigation (Tabs) -->
+            <div class="bg-white p-2 rounded-pill border border-zinc-100 shadow-soft inline-flex items-center gap-2 mb-8">
+                <button onclick="switchTab('overview')" id="tab-overview" class="px-8 py-3 rounded-pill text-xs font-black uppercase tracking-widest transition-all bg-zinc-900 text-white shadow-lg">Overview</button>
+                <button onclick="switchTab('timeline')" id="tab-timeline" class="px-8 py-3 rounded-pill text-xs font-black uppercase tracking-widest transition-all text-zinc-400 hover:text-zinc-900">Timeline</button>
+                <button onclick="switchTab('organizer')" id="tab-organizer" class="px-8 py-3 rounded-pill text-xs font-black uppercase tracking-widest transition-all text-zinc-400 hover:text-zinc-900">Organizer</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="bg-white rounded-[50px] border border-zinc-100 shadow-soft p-12 min-h-[400px]">
+                
+                <!-- Overview Section -->
+                <div id="content-overview" class="tab-content space-y-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-zinc-50 rounded-2xl flex items-center justify-center border border-zinc-100">
+                            <span class="material-symbols-outlined text-zinc-900">description</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-zinc-900 tracking-tighter">Detailed Plan</h2>
+                    </div>
+                    <p class="text-xl text-zinc-500 font-medium leading-relaxed" th:text="${event.plans}">Full plans...</p>
+                    <p class="text-lg text-zinc-400 leading-relaxed italic border-l-4 border-zinc-100 pl-6" th:text="${event.description}">Quick summary...</p>
+                </div>
+
+                <!-- Timeline Section -->
+                <div id="content-timeline" class="tab-content hidden space-y-12">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="w-12 h-12 bg-zinc-50 rounded-2xl flex items-center justify-center border border-zinc-100">
+                            <span class="material-symbols-outlined text-zinc-900">timeline</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-zinc-900 tracking-tighter">Event Timeline</h2>
+                    </div>
+                    <div class="space-y-0 ml-4">
+                        <div th:each="item : ${#strings.arraySplit(event.schedule, ';')}" 
+                             class="flex gap-8 pb-10 border-l-2 border-zinc-100 pl-10 relative last:border-0 last:pb-0">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white border-4 border-zinc-900 shadow-sm"></div>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-10">
+                                <span class="text-4xl font-black text-zinc-900 tracking-tighter shrink-0" 
+                                      th:text="${#strings.arraySplit(item, ' - ').length > 0 ? #strings.arraySplit(item, ' - ')[0] : 'TBA'}">09:00 AM</span>
+                                <h3 class="text-xl font-bold text-zinc-400 tracking-tight leading-none" 
+                                    th:text="${#strings.arraySplit(item, ' - ').length > 1 ? #strings.arraySplit(item, ' - ')[1] : item}">Description</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organizer Section -->
+                <div id="content-organizer" class="tab-content hidden space-y-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-zinc-50 rounded-2xl flex items-center justify-center border border-zinc-100">
+                            <span class="material-symbols-outlined text-zinc-900">account_circle</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-zinc-900 tracking-tighter">Organizer Details</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-8 bg-zinc-50 rounded-3xl border border-zinc-100">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2">Primary Coordinator</p>
+                            <p class="text-2xl font-black text-zinc-900" th:text="${event.coordinator}">Prof. Name</p>
+                        </div>
+                        <div class="p-8 bg-zinc-900 rounded-3xl text-white shadow-xl">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2">Direct Contact</p>
+                            <p class="text-lg font-bold" th:text="${event.organizerContact}">Email/Phone</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Action Sidebar -->
+        <div class="lg:col-span-4 lg:sticky lg:top-44">
+            <div class="bg-zinc-900 rounded-[60px] p-12 shadow-2xl space-y-12 text-white">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Attendance</p>
+                        <div class="px-3 py-1 bg-white/10 rounded text-[9px] font-black uppercase tracking-widest" th:text="${event.status}">Upcoming</div>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <p class="text-5xl font-black tracking-tighter" th:text="${event.capacity - event.registeredCount}">45</p>
+                        <p class="text-xs font-black text-zinc-500 uppercase">Seats Remaining</p>
+                    </div>
+                    <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-white h-full transition-all duration-1000" th:style="'width: ' + (${event.registeredCount} * 100 / ${event.capacity}) + '%'"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 pt-6">
+                    <div th:if="${!isRegistered}">
+                        <form th:action="@{'/events/' + ${event.id} + '/register'}" method="post">
+                            <button type="submit" class="w-full bg-white text-zinc-900 py-6 rounded-pill font-black text-xs uppercase tracking-widest hover:scale-[1.02] transition-all shadow-xl active:scale-95" th:disabled="${event.registeredCount >= event.capacity}">Confirm Spot</button>
+                        </form>
+                    </div>
+                    <div th:if="${isRegistered}" class="space-y-4">
+                        <div class="p-4 bg-white/5 rounded-2xl flex items-center gap-3 border border-white/10">
+                            <span class="material-symbols-outlined text-green-400 text-sm">verified</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-zinc-400">Successfully Registered</span>
+                        </div>
+                        <form th:action="@{'/events/' + ${event.id} + '/cancel'}" method="post">
+                            <button type="submit" class="w-full bg-transparent border border-white/10 text-zinc-500 py-5 rounded-pill font-black text-[10px] uppercase tracking-widest hover:text-red-400 hover:border-red-400/30 transition-all">Cancel Attendance</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="pt-10 border-t border-white/5 grid grid-cols-2 gap-8">
+                    <div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-1">When</p>
+                        <p class="text-sm font-black" th:text="${#temporals.format(event.date, 'MMM dd')}">Oct 24</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-1">Time</p>
+                        <p class="text-sm font-black">09:00 AM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+<script>
+    function switchTab(tabName) {
+        // Hide all content
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        // Show selected content
+        document.getElementById('content-' + tabName).classList.remove('hidden');
+        
+        // Reset all buttons
+        document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+            btn.classList.remove('bg-zinc-900', 'text-white', 'shadow-lg');
+            btn.classList.add('text-zinc-400');
+        });
+        
+        // Activate selected button
+        const activeBtn = document.getElementById('tab-' + tabName);
+        activeBtn.classList.add('bg-zinc-900', 'text-white', 'shadow-lg');
+        activeBtn.classList.remove('text-zinc-400');
+    }
+</script>
+</body>
+</html>

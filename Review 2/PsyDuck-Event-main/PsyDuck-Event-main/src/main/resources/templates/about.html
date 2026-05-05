@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Our Vision')}"></head>
+<body>
+
+<header th:replace="~{fragments :: navbar}"></header>
+
+<main class="max-w-[1200px] mx-auto px-6 pt-48 pb-32 min-h-screen">
+    <div class="max-w-[800px] mx-auto text-center mb-32">
+        <span class="text-[10px] font-black tracking-[0.4em] uppercase text-zinc-400 mb-6 inline-block">The PsyDuck Vision</span>
+        <h1 class="text-7xl font-black text-zinc-900 tracking-tighter mb-10 leading-[0.9]">Redefining Campus Engagement.</h1>
+        <p class="text-xl text-zinc-400 font-medium leading-relaxed">We believe that learning happens both inside and outside the classroom. Our platform bridges the gap between academic excellence and social vibrancy.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-40">
+        <div class="p-12 bg-white rounded-[40px] border border-zinc-100 shadow-soft">
+            <div class="w-16 h-16 bg-zinc-900 text-white rounded-3xl flex items-center justify-center mb-10 shadow-2xl">
+                <span class="material-symbols-outlined text-3xl">rocket_launch</span>
+            </div>
+            <h3 class="text-3xl font-black mb-4 tracking-tight">Innovation</h3>
+            <p class="text-zinc-500 font-medium leading-relaxed">Using cutting-edge technology to streamline event registration and campus-wide coordination. We simplify the complex.</p>
+        </div>
+        
+        <div class="p-12 bg-zinc-900 rounded-[40px] text-white shadow-2xl">
+            <div class="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center mb-10 border border-white/10">
+                <span class="material-symbols-outlined text-3xl">groups</span>
+            </div>
+            <h3 class="text-3xl font-black mb-4 tracking-tight text-white">Community</h3>
+            <p class="text-zinc-400 font-medium leading-relaxed">Fostering connections that matter. PsyDuck is designed to bring students together through shared interests and experiences.</p>
+        </div>
+    </div>
+
+    <section class="relative rounded-[60px] overflow-hidden p-20 bg-zinc-50 border border-zinc-100">
+        <div class="max-w-[600px]">
+            <h2 class="text-5xl font-black text-zinc-900 tracking-tighter mb-8">The Philosophy.</h2>
+            <p class="text-lg text-zinc-500 font-medium leading-relaxed mb-12">Inspired by the adaptability of campus life, our name represents our commitment to staying steady on the surface while working tirelessly to deliver perfection in every event.</p>
+            <div class="flex items-center gap-6">
+                <img th:src="@{/images/logo.png}" class="w-16 h-16 rounded-full border-4 border-white shadow-xl" alt="Logo"/>
+                <div>
+                    <p class="text-xl font-black text-zinc-900 leading-none mb-1">PsyDuck Events Team</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400">Established 2024</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute right-[-100px] bottom-[-100px] opacity-[0.03] pointer-events-none">
+            <span class="material-symbols-outlined text-[600px]">auto_awesome</span>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>
